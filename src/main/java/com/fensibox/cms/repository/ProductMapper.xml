@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fensibox.cms.repository.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.fensibox.cms.entity.Product">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="gid" jdbcType="BIGINT" property="gid" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="model_id" jdbcType="INTEGER" property="modelId" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="limit_min" jdbcType="INTEGER" property="limitMin" />
+    <result column="limit_max" jdbcType="INTEGER" property="limitMax" />
+    <result column="rate" jdbcType="INTEGER" property="rate" />
+    <result column="close" jdbcType="INTEGER" property="close" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.fensibox.cms.entity.Product">
+    <result column="p_desc" jdbcType="LONGVARCHAR" property="pDesc" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, gid, cid, model_id, p_name, image, price, limit_min, limit_max, rate, close, 
+    created_time, updated_time, is_deleted
+  </sql>
+  <sql id="Blob_Column_List">
+    p_desc
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.fensibox.cms.entity.ProductExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.fensibox.cms.entity.ProductExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fensibox.cms.entity.ProductExample">
+    delete from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fensibox.cms.entity.Product">
+    insert into product (id, gid, cid, model_id, 
+      p_name, image, price, 
+      limit_min, limit_max, rate, 
+      close, created_time, updated_time, 
+      is_deleted, p_desc)
+    values (#{id,jdbcType=BIGINT}, #{gid,jdbcType=BIGINT}, #{cid,jdbcType=INTEGER}, #{modelId,jdbcType=INTEGER}, 
+      #{pName,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{limitMin,jdbcType=INTEGER}, #{limitMax,jdbcType=INTEGER}, #{rate,jdbcType=INTEGER}, 
+      #{close,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=BIT}, #{pDesc,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fensibox.cms.entity.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="gid != null">
+        gid,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="modelId != null">
+        model_id,
+      </if>
+      <if test="pName != null">
+        p_name,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="limitMin != null">
+        limit_min,
+      </if>
+      <if test="limitMax != null">
+        limit_max,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="close != null">
+        close,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="pDesc != null">
+        p_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="gid != null">
+        #{gid,jdbcType=BIGINT},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="modelId != null">
+        #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="pName != null">
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="limitMin != null">
+        #{limitMin,jdbcType=INTEGER},
+      </if>
+      <if test="limitMax != null">
+        #{limitMax,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="close != null">
+        #{close,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="pDesc != null">
+        #{pDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fensibox.cms.entity.ProductExample" resultType="java.lang.Long">
+    select count(*) from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update product
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.gid != null">
+        gid = #{record.gid,jdbcType=BIGINT},
+      </if>
+      <if test="record.cid != null">
+        cid = #{record.cid,jdbcType=INTEGER},
+      </if>
+      <if test="record.modelId != null">
+        model_id = #{record.modelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pName != null">
+        p_name = #{record.pName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.limitMin != null">
+        limit_min = #{record.limitMin,jdbcType=INTEGER},
+      </if>
+      <if test="record.limitMax != null">
+        limit_max = #{record.limitMax,jdbcType=INTEGER},
+      </if>
+      <if test="record.rate != null">
+        rate = #{record.rate,jdbcType=INTEGER},
+      </if>
+      <if test="record.close != null">
+        close = #{record.close,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdTime != null">
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedTime != null">
+        updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null">
+        is_deleted = #{record.isDeleted,jdbcType=BIT},
+      </if>
+      <if test="record.pDesc != null">
+        p_desc = #{record.pDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update product
+    set id = #{record.id,jdbcType=BIGINT},
+      gid = #{record.gid,jdbcType=BIGINT},
+      cid = #{record.cid,jdbcType=INTEGER},
+      model_id = #{record.modelId,jdbcType=INTEGER},
+      p_name = #{record.pName,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      limit_min = #{record.limitMin,jdbcType=INTEGER},
+      limit_max = #{record.limitMax,jdbcType=INTEGER},
+      rate = #{record.rate,jdbcType=INTEGER},
+      close = #{record.close,jdbcType=INTEGER},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=BIT},
+      p_desc = #{record.pDesc,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update product
+    set id = #{record.id,jdbcType=BIGINT},
+      gid = #{record.gid,jdbcType=BIGINT},
+      cid = #{record.cid,jdbcType=INTEGER},
+      model_id = #{record.modelId,jdbcType=INTEGER},
+      p_name = #{record.pName,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      limit_min = #{record.limitMin,jdbcType=INTEGER},
+      limit_max = #{record.limitMax,jdbcType=INTEGER},
+      rate = #{record.rate,jdbcType=INTEGER},
+      close = #{record.close,jdbcType=INTEGER},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fensibox.cms.entity.Product">
+    update product
+    <set>
+      <if test="gid != null">
+        gid = #{gid,jdbcType=BIGINT},
+      </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="modelId != null">
+        model_id = #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="pName != null">
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="limitMin != null">
+        limit_min = #{limitMin,jdbcType=INTEGER},
+      </if>
+      <if test="limitMax != null">
+        limit_max = #{limitMax,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="close != null">
+        close = #{close,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="pDesc != null">
+        p_desc = #{pDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.fensibox.cms.entity.Product">
+    update product
+    set gid = #{gid,jdbcType=BIGINT},
+      cid = #{cid,jdbcType=INTEGER},
+      model_id = #{modelId,jdbcType=INTEGER},
+      p_name = #{pName,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      limit_min = #{limitMin,jdbcType=INTEGER},
+      limit_max = #{limitMax,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=INTEGER},
+      close = #{close,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT},
+      p_desc = #{pDesc,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fensibox.cms.entity.Product">
+    update product
+    set gid = #{gid,jdbcType=BIGINT},
+      cid = #{cid,jdbcType=INTEGER},
+      model_id = #{modelId,jdbcType=INTEGER},
+      p_name = #{pName,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      limit_min = #{limitMin,jdbcType=INTEGER},
+      limit_max = #{limitMax,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=INTEGER},
+      close = #{close,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

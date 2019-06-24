@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fensibox.cms.repository.biz.CmsBizMapper">
+    <resultMap id="BaseResultMap" type="com.fensibox.cms.entity.Announcement">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+    </resultMap>
+
+    <resultMap id="UserOutVMMap" type="com.fensibox.cms.controller.vm.user.UserOutVM">
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="role" jdbcType="TINYINT" property="role"/>
+        <result column="invite_code" jdbcType="VARCHAR" property="inviteCode"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    </resultMap>
+
+    <resultMap id="ClientUserMap" type="com.fensibox.cms.entity.ClientUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="role" jdbcType="INTEGER" property="role"/>
+        <result column="invite_code" jdbcType="VARCHAR" property="inviteCode"/>
+        <result column="credit" jdbcType="DOUBLE" property="credit"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="enabled" jdbcType="INTEGER" property="enabled"/>
+    </resultMap>
+
+    <resultMap id="productListOutVM" type="com.fensibox.cms.controller.vm.product.ProductListOutVM">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gid" jdbcType="BIGINT" property="gid"/>
+        <result column="p_name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+    </resultMap>
+
+    <resultMap id="AnnouncementOutVM" type="com.fensibox.cms.controller.vm.announcement.AnnouncementOutVM">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="created_time" jdbcType="VARCHAR" property="createdTime"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+
+    <resultMap id="orderOutVM" type="com.fensibox.cms.controller.vm.order.OrderOutVM">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="oid" jdbcType="BIGINT" property="oid"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+        <result column="tnum" jdbcType="INTEGER" property="tnum"/>
+        <result column="start_num" jdbcType="INTEGER" property="startNum"/>
+        <result column="now_num" jdbcType="INTEGER" property="nowNum"/>
+        <result column="gid" jdbcType="BIGINT" property="gid"/>
+        <result column="p_name" jdbcType="BIGINT" property="gname"/>
+        <result column="order_price" jdbcType="DOUBLE" property="orderPrice"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="created_time" jdbcType="VARCHAR" property="createdTime"/>
+    </resultMap>
+
+    <resultMap id="DepositListOutVM" type="com.fensibox.cms.controller.vm.deposit.DepositListOutVM">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="deposit_type" jdbcType="INTEGER" property="depositType"/>
+        <result column="deposit_price" jdbcType="DOUBLE" property="money"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    </resultMap>
+
+    <select id="selectCustomUserList" resultMap="UserOutVMMap">
+        select username, role,invite_code ,created_time from custom_user where 1=1
+        <if test="role==2">
+            and upper_user_id = #{userId}
+        </if>
+        order by created_time desc
+    </select>
+
+    <select id="selectClientUserList" resultMap="ClientUserMap">
+        select id,phone,username,role,invite_code,credit,created_time,enabled from client_user where 1=1
+        <if test="role==2">
+            and invite_code in (select invite_code from custom_user where upper_user_id = #{userId})
+        </if>
+        <if test="role==3">
+            and invite_code in (select invite_code from custom_user where id = #{userId})
+        </if>
+        order by created_time desc
+    </select>
+
+    <select id="selectClientUserCount" resultType="int">
+        select count(1) from client_user where 1=1
+        <if test="role==2">
+            and invite_code in (select invite_code from custom_user where upper_user_id = #{userId})
+        </if>
+        <if test="role==3">
+            and invite_code in (select invite_code from custom_user where id = #{userId})
+        </if>
+        <if test="range.start != null and range.end !=null">
+            and created_time BETWEEN #{range.start} AND #{range.end}
+        </if>
+    </select>
+
+    <select id="selectProductList" resultMap="productListOutVM">
+        select id,gid,p_name,price from `product` where `close` = 0 and is_deleted = 0
+        <if test="pname !=null">
+            and `p_name` like "%"#{pname}"%"
+        </if>
+        order by cid
+    </select>
+
+    <select id="selectDiscount" resultType="com.fensibox.cms.entity.MemberDiscount">
+        select * from member_discount limit 1
+    </select>
+
+    <select id="selectAnnouncementList" resultMap="AnnouncementOutVM">
+        select id ,title,created_time from announcement order by created_time desc
+    </select>
+
+    <select id="selectAnnouncementDetail" resultMap="AnnouncementOutVM">
+        select id ,content,title,created_time from announcement where id = #{id} limit 1
+    </select>
+
+    <select id="selectOrderList" resultMap="orderOutVM">
+        select
+        o.id,o.uid,u.username,o.oid,o.status,o.num,o.tnum,o.start_num,o.now_num,o.gid,p.p_name,o.order_price,o.remark,o.created_time
+        from `order` o , `product` p,`client_user` u
+        where o.gid = p.gid
+        and o.uid = u.id
+        <if test="role == 2">
+            and o.uid in(select id from client_user c where c.invite_code in (select invite_code from custom_user where
+            upper_user_id = #{uid} ))
+        </if>
+        <if test="role == 3">
+            and o.uid in (select id from client_user c where c.invite_code = (select invite_code from custom_user where
+            id = #{uid}))
+        </if>
+        <!-- 用户名 -->
+        <if test="orderContentVM != null and orderContentVM.username != null">
+            AND u.username = #{orderContentVM.username}
+        </if>
+        <!-- 订单状态 -->
+        <if test="orderContentVM != null and orderContentVM.status != null">
+            AND o.status = #{orderContentVM.status}
+        </if>
+        <!-- 开始时间 -->
+        <if test="orderContentVM != null and orderContentVM.periodStart != null">
+            AND o.created_time >= #{orderContentVM.periodStart}
+        </if>
+        <!-- 结束时间 -->
+        <if test="orderContentVM != null and orderContentVM.periodEnd != null">
+            AND o.created_time &lt;= #{orderContentVM.periodEnd}
+        </if>
+        order by o.created_time desc
+    </select>
+
+    <select id="selectOrderDetail" resultMap="orderOutVM">
+        select
+        o.id,o.uid,u.username,o.oid,o.status,o.num,o.tnum,o.start_num,o.now_num,o.gid,p.p_name,o.order_price,o.remark,o.created_time
+        from `order` o , `product` p,`client_user` u
+        where o.gid = p.gid
+        and o.uid = u.id
+        and o.id = #{id}
+    </select>
+
+    <select id="selectDepositList" resultMap="DepositListOutVM">
+        select d.id,d.uid,u.username,u.phone,d.status,d.deposit_type,d.deposit_price,d.created_time from `deposit` d
+        ,`client_user` u
+        where d.uid = u.id
+        <if test="role == 2">
+            and d.uid in(select id from client_user c where c.invite_code in (select invite_code from custom_user where
+            upper_user_id = #{uid} ))
+        </if>
+        <if test="role == 3">
+            and d.uid in (select id from client_user c where c.invite_code = (select invite_code from custom_user where
+            id = #{uid}))
+        </if>
+        <!-- 用户名 -->
+        <if test="orderContentVM != null and orderContentVM.username != null">
+            AND u.username = #{orderContentVM.username}
+        </if>
+        <!-- 充值状态 -->
+        <if test="orderContentVM != null and orderContentVM.status != null">
+            AND d.status = #{orderContentVM.status}
+        </if>
+        <!-- 开始时间 -->
+        <if test="orderContentVM != null and orderContentVM.periodStart != null">
+            AND d.created_time >= #{orderContentVM.periodStart}
+        </if>
+        <!-- 结束时间 -->
+        <if test="orderContentVM != null and orderContentVM.periodEnd != null">
+            AND d.created_time &lt;= #{orderContentVM.periodEnd}
+        </if>
+        order by d.created_time desc
+    </select>
+
+</mapper>
