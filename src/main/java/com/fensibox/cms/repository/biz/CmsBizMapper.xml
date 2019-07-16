@@ -10,13 +10,15 @@
     </resultMap>
 
     <resultMap id="UserOutVMMap" type="com.fensibox.cms.controller.vm.user.UserOutVM">
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="role" jdbcType="TINYINT" property="role"/>
+        <result column="enabled" jdbcType="TINYINT" property="enabled"/>
         <result column="invite_code" jdbcType="VARCHAR" property="inviteCode"/>
         <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
     </resultMap>
 
-    <resultMap id="ClientUserMap" type="com.fensibox.cms.entity.ClientUser">
+    <resultMap id="ClientUserMap" type="com.fensibox.cms.controller.vm.user.ClientUserOutVM">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -32,6 +34,7 @@
         <result column="gid" jdbcType="BIGINT" property="gid"/>
         <result column="p_name" jdbcType="VARCHAR" property="name"/>
         <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="member_price" jdbcType="DOUBLE" property="memberPrice"/>
     </resultMap>
 
     <resultMap id="AnnouncementOutVM" type="com.fensibox.cms.controller.vm.announcement.AnnouncementOutVM">
@@ -69,13 +72,30 @@
         <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
     </resultMap>
 
+    <resultMap id="UserAchievementOneVM" type="com.fensibox.cms.controller.vm.user.UserAchievementOneVM">
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="total_money" jdbcType="DOUBLE" property="totalMoney"/>
+    </resultMap>
+
+
+
     <select id="selectCustomUserList" resultMap="UserOutVMMap">
-        select username, role,invite_code ,created_time from custom_user where 1=1
+        select id, username, role,invite_code ,created_time,enabled from custom_user where 1=1
         <if test="role==2">
             and upper_user_id = #{userId}
         </if>
+        <if test="role==3">
+            and id = #{userId}
+        </if>
         order by created_time desc
     </select>
+
+    <select id="selectCustomUser" resultMap="UserOutVMMap">
+        select id, username, role,invite_code ,created_time,enabled from custom_user
+        where id = #{userId}
+        limit 1
+    </select>
+
 
     <select id="selectClientUserList" resultMap="ClientUserMap">
         select id,phone,username,role,invite_code,credit,created_time,enabled from client_user where 1=1
@@ -88,7 +108,34 @@
         order by created_time desc
     </select>
 
-    <select id="selectClientUserCount" resultType="int">
+    <select id="selectClientUserCount" resultMap="UserAchievementOneVM">
+        select count(1) as count,
+        (select ifnull(sum(deposit_price),0) from deposit d where uid in
+        (select id from client_user where 1=1
+        <if test="role==2">
+            and invite_code in (select invite_code from custom_user where upper_user_id = #{userId})
+        </if>
+        <if test="role==3">
+            and invite_code in (select invite_code from custom_user where id = #{userId})
+        </if>
+        and is_deleted = 0
+        ) and d.status = 1
+        <if test="range.start != null and range.end !=null">
+            and d.created_time BETWEEN #{range.start} AND #{range.end}
+        </if>
+        ) as total_money from client_user where 1=1
+        <if test="role==2">
+            and invite_code in (select invite_code from custom_user where upper_user_id = #{userId})
+        </if>
+        <if test="role==3">
+            and invite_code in (select invite_code from custom_user where id = #{userId})
+        </if>
+        and is_deleted = 0
+        <if test="range.start != null and range.end !=null">
+            and created_time BETWEEN #{range.start} AND #{range.end}
+        </if>
+    </select>
+<!--    <select id="selectClientUserCount" resultType="int">
         select count(1) from client_user where 1=1
         <if test="role==2">
             and invite_code in (select invite_code from custom_user where upper_user_id = #{userId})
@@ -99,10 +146,10 @@
         <if test="range.start != null and range.end !=null">
             and created_time BETWEEN #{range.start} AND #{range.end}
         </if>
-    </select>
+    </select>-->
 
     <select id="selectProductList" resultMap="productListOutVM">
-        select id,gid,p_name,price from `product` where `close` = 0 and is_deleted = 0
+        select id,gid,p_name,price ,member_price from `product` where `close` = 0 and is_deleted = 0
         <if test="pname !=null">
             and `p_name` like "%"#{pname}"%"
         </if>

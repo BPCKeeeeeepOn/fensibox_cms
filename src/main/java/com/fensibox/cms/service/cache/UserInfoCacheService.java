@@ -18,7 +18,7 @@ public class UserInfoCacheService {
     @Autowired
     private UserService userService;
 
-    @Cacheable(cacheNames = "fensibox_cms_user", key = "#userName")
+    @Cacheable(cacheNames = "fensibox_cms_user_prod", key = "#userName")
     public CustomUser getUserCache(String userName) {
         CustomUser user = userService.selectUserByUserName(userName);
         return user;
@@ -29,7 +29,7 @@ public class UserInfoCacheService {
      *
      * @param userName
      */
-    @CacheEvict(cacheNames = "fensibox_cms_user", key = "#userName")
+    @CacheEvict(cacheNames = "fensibox_cms_user_prod", key = "#userName")
     public void removeCache(String userName) {
         return;
     }

@@ -7,4 +7,8 @@ public class UserInVM {
 
     private String username;
 
+    private String inviteCode;
+
+    private Integer enabled;
+
 }

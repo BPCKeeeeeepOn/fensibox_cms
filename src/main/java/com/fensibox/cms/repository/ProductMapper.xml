@@ -9,6 +9,7 @@
     <result column="p_name" jdbcType="VARCHAR" property="pName" />
     <result column="image" jdbcType="VARCHAR" property="image" />
     <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="member_price" jdbcType="DOUBLE" property="memberPrice" />
     <result column="limit_min" jdbcType="INTEGER" property="limitMin" />
     <result column="limit_max" jdbcType="INTEGER" property="limitMax" />
     <result column="rate" jdbcType="INTEGER" property="rate" />
@@ -79,8 +80,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, gid, cid, model_id, p_name, image, price, limit_min, limit_max, rate, close, 
-    created_time, updated_time, is_deleted
+    id, gid, cid, model_id, p_name, image, price, member_price, limit_min, limit_max, 
+    rate, close, created_time, updated_time, is_deleted
   </sql>
   <sql id="Blob_Column_List">
     p_desc
@@ -136,14 +137,16 @@
   <insert id="insert" parameterType="com.fensibox.cms.entity.Product">
     insert into product (id, gid, cid, model_id, 
       p_name, image, price, 
-      limit_min, limit_max, rate, 
-      close, created_time, updated_time, 
-      is_deleted, p_desc)
+      member_price, limit_min, limit_max, 
+      rate, close, created_time, 
+      updated_time, is_deleted, p_desc
+      )
     values (#{id,jdbcType=BIGINT}, #{gid,jdbcType=BIGINT}, #{cid,jdbcType=INTEGER}, #{modelId,jdbcType=INTEGER}, 
       #{pName,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
-      #{limitMin,jdbcType=INTEGER}, #{limitMax,jdbcType=INTEGER}, #{rate,jdbcType=INTEGER}, 
-      #{close,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=BIT}, #{pDesc,jdbcType=LONGVARCHAR})
+      #{memberPrice,jdbcType=DOUBLE}, #{limitMin,jdbcType=INTEGER}, #{limitMax,jdbcType=INTEGER}, 
+      #{rate,jdbcType=INTEGER}, #{close,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT}, #{pDesc,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fensibox.cms.entity.Product">
     insert into product
@@ -168,6 +171,9 @@
       </if>
       <if test="price != null">
         price,
+      </if>
+      <if test="memberPrice != null">
+        member_price,
       </if>
       <if test="limitMin != null">
         limit_min,
@@ -215,6 +221,9 @@
       </if>
       <if test="price != null">
         #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="memberPrice != null">
+        #{memberPrice,jdbcType=DOUBLE},
       </if>
       <if test="limitMin != null">
         #{limitMin,jdbcType=INTEGER},
@@ -272,6 +281,9 @@
       <if test="record.price != null">
         price = #{record.price,jdbcType=DOUBLE},
       </if>
+      <if test="record.memberPrice != null">
+        member_price = #{record.memberPrice,jdbcType=DOUBLE},
+      </if>
       <if test="record.limitMin != null">
         limit_min = #{record.limitMin,jdbcType=INTEGER},
       </if>
@@ -310,6 +322,7 @@
       p_name = #{record.pName,jdbcType=VARCHAR},
       image = #{record.image,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DOUBLE},
+      member_price = #{record.memberPrice,jdbcType=DOUBLE},
       limit_min = #{record.limitMin,jdbcType=INTEGER},
       limit_max = #{record.limitMax,jdbcType=INTEGER},
       rate = #{record.rate,jdbcType=INTEGER},
@@ -331,6 +344,7 @@
       p_name = #{record.pName,jdbcType=VARCHAR},
       image = #{record.image,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DOUBLE},
+      member_price = #{record.memberPrice,jdbcType=DOUBLE},
       limit_min = #{record.limitMin,jdbcType=INTEGER},
       limit_max = #{record.limitMax,jdbcType=INTEGER},
       rate = #{record.rate,jdbcType=INTEGER},
@@ -362,6 +376,9 @@
       </if>
       <if test="price != null">
         price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="memberPrice != null">
+        member_price = #{memberPrice,jdbcType=DOUBLE},
       </if>
       <if test="limitMin != null">
         limit_min = #{limitMin,jdbcType=INTEGER},
@@ -398,6 +415,7 @@
       p_name = #{pName,jdbcType=VARCHAR},
       image = #{image,jdbcType=VARCHAR},
       price = #{price,jdbcType=DOUBLE},
+      member_price = #{memberPrice,jdbcType=DOUBLE},
       limit_min = #{limitMin,jdbcType=INTEGER},
       limit_max = #{limitMax,jdbcType=INTEGER},
       rate = #{rate,jdbcType=INTEGER},
@@ -416,6 +434,7 @@
       p_name = #{pName,jdbcType=VARCHAR},
       image = #{image,jdbcType=VARCHAR},
       price = #{price,jdbcType=DOUBLE},
+      member_price = #{memberPrice,jdbcType=DOUBLE},
       limit_min = #{limitMin,jdbcType=INTEGER},
       limit_max = #{limitMax,jdbcType=INTEGER},
       rate = #{rate,jdbcType=INTEGER},

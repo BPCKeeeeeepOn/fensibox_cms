@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -75,5 +76,27 @@ public class CommonUtils {
     public static String randomNum() {
         int num = (int) ((Math.random() * 9 + 1) * 100000);
         return String.valueOf(num);
+    }
+
+    /**
+     * @param number 需要保留两位的数
+     * @return
+     */
+    public static double doubleFormat(double number) {
+        // 将double类型转为BigDecimal
+        BigDecimal bigDecimal = new BigDecimal(number);
+        // 保留两位小数,并且四舍五入
+        return bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    /**
+     * @param number 需要保留五位的数
+     * @return
+     */
+    public static double doubleFormat5(double number) {
+        // 将double类型转为BigDecimal
+        BigDecimal bigDecimal = new BigDecimal(number);
+        // 保留两位小数,并且四舍五入
+        return bigDecimal.setScale(5,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }

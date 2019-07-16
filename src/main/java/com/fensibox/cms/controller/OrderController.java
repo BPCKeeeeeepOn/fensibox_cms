@@ -26,4 +26,10 @@ public class OrderController {
     public ResponseResult detail(@PathVariable("id") Long id) {
         return ResponseResult.success().body(orderService.detail(id));
     }
+
+    @PostMapping("/syncOrder")
+    public ResponseResult syncOrder() {
+        orderService.syncOrder();
+        return ResponseResult.success();
+    }
 }

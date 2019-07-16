@@ -18,6 +18,8 @@ public class Product implements Serializable {
 
     private Double price;
 
+    private Double memberPrice;
+
     private Integer limitMin;
 
     private Integer limitMax;
@@ -90,6 +92,14 @@ public class Product implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getMemberPrice() {
+        return memberPrice;
+    }
+
+    public void setMemberPrice(Double memberPrice) {
+        this.memberPrice = memberPrice;
     }
 
     public Integer getLimitMin() {

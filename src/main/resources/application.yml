@@ -4,7 +4,7 @@ spring:
   application:
     name: fensibox-cms
   profiles:
-    active: dev
+    active: prod
   redis:
     database: 0
     port: 6379

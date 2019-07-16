@@ -545,6 +545,66 @@ public class ProductExample {
             return (Criteria) this;
         }
 
+        public Criteria andMemberPriceIsNull() {
+            addCriterion("member_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceIsNotNull() {
+            addCriterion("member_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceEqualTo(Double value) {
+            addCriterion("member_price =", value, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceNotEqualTo(Double value) {
+            addCriterion("member_price <>", value, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceGreaterThan(Double value) {
+            addCriterion("member_price >", value, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("member_price >=", value, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceLessThan(Double value) {
+            addCriterion("member_price <", value, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceLessThanOrEqualTo(Double value) {
+            addCriterion("member_price <=", value, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceIn(List<Double> values) {
+            addCriterion("member_price in", values, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceNotIn(List<Double> values) {
+            addCriterion("member_price not in", values, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceBetween(Double value1, Double value2) {
+            addCriterion("member_price between", value1, value2, "memberPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberPriceNotBetween(Double value1, Double value2) {
+            addCriterion("member_price not between", value1, value2, "memberPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andLimitMinIsNull() {
             addCriterion("limit_min is null");
             return (Criteria) this;

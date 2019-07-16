@@ -31,7 +31,13 @@ public class ProductController {
 
     @PostMapping("/price/update")
     public ResponseResult updatePrice(@RequestBody ProductInVm productInVm) {
-        productService.update(productInVm.getId(), productInVm.getPrice());
+        productService.updatePrice(productInVm.getId(), productInVm.getPrice());
+        return ResponseResult.success();
+    }
+
+    @PostMapping("/member/update")
+    public ResponseResult updateMemberPrice(@RequestBody ProductInVm productInVm) {
+        productService.updateMemberPrice(productInVm.getId(), productInVm.getPrice());
         return ResponseResult.success();
     }
 

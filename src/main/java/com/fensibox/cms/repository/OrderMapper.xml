@@ -86,7 +86,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from order
+    from `order`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -111,7 +111,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.fensibox.cms.entity.Order">
-    insert into order (id, uid, oid, status, 
+    insert into `order` (id, uid, oid, status,
       num, tnum, start_num, 
       now_num, gid, model_id, 
       order_price, remark, created_time, 
@@ -123,7 +123,7 @@
       #{updatedTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.fensibox.cms.entity.Order">
-    insert into order
+    insert into `order`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -226,7 +226,7 @@
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update order
+    update `order`
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
@@ -279,7 +279,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update order
+    update `order`
     set id = #{record.id,jdbcType=BIGINT},
       uid = #{record.uid,jdbcType=BIGINT},
       oid = #{record.oid,jdbcType=BIGINT},
@@ -300,7 +300,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.fensibox.cms.entity.Order">
-    update order
+    update `order`
     <set>
       <if test="uid != null">
         uid = #{uid,jdbcType=BIGINT},
@@ -348,7 +348,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fensibox.cms.entity.Order">
-    update order
+    update `order`
     set uid = #{uid,jdbcType=BIGINT},
       oid = #{oid,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},

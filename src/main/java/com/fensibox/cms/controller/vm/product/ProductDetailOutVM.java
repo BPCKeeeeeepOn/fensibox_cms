@@ -54,6 +54,7 @@ public class ProductDetailOutVM {
         product.setLimitMin(limitMin);
         product.setModelId(modelId);
         product.setPrice(Double.valueOf(price));
+        product.setMemberPrice(Double.valueOf(price));
         product.setRate(rate);
         product.setpName(name);
         return product;

@@ -1,18 +1,42 @@
 package com.fensibox.cms.controller.vm.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class UserAchievementOutVM {
 
-    @JsonProperty("last_day")
-    private int lastDay;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String uid;
 
-    private int month;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String username;
 
-    @JsonProperty("last_month")
-    private int lastMonth;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer role;
+    //用户统计
+    @JsonProperty("last_day_count")
+    private Integer lastDayCount;
 
-    private int total;
+    @JsonProperty("month_count")
+    private Integer monthCount;
+
+    @JsonProperty("last_month_count")
+    private Integer lastMonthCount;
+
+    @JsonProperty("total_count")
+    private Integer totalCount;
+    //充值记录统计
+    @JsonProperty("last_day_money")
+    private Double lastDayMoney;
+
+    @JsonProperty("month_money")
+    private Double monthMoney;
+
+    @JsonProperty("last_month_money")
+    private Double lastMonthMoney;
+
+    @JsonProperty("total_money")
+    private Double totalMoney;
 }

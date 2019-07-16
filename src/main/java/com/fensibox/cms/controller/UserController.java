@@ -2,6 +2,7 @@ package com.fensibox.cms.controller;
 
 import com.fensibox.cms.common.ResponseResult;
 import com.fensibox.cms.controller.vm.PageVM;
+import com.fensibox.cms.controller.vm.user.UserCreditInVM;
 import com.fensibox.cms.controller.vm.user.UserInVM;
 import com.fensibox.cms.service.UserService;
 import com.fensibox.cms.utils.CurrentUserUtils;
@@ -29,9 +30,20 @@ public class UserController {
         return ResponseResult.success();
     }
 
-    @PostMapping("/addMock")
-    public ResponseResult addMock() {
-        userService.add();
+    @GetMapping("/detail/{id}")
+    public ResponseResult detail(@PathVariable("id") Long id) {
+        return ResponseResult.success().body(userService.detail(id));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseResult updateCustomUser(@PathVariable("id") Long id, @RequestBody UserInVM userInVM) {
+        userService.updateCustomUser(id, userInVM);
+        return ResponseResult.success();
+    }
+
+    @PutMapping("/update/credit/{id}")
+    public ResponseResult updateCredit(@PathVariable("id") Long id, @RequestBody UserCreditInVM userCreditInVM) {
+        userService.updateCredit(id, userCreditInVM.getCredit());
         return ResponseResult.success();
     }
 
@@ -59,8 +71,13 @@ public class UserController {
         return ResponseResult.success();
     }
 
-    @GetMapping("/achievement")
-    public ResponseResult achievement() {
-        return ResponseResult.success().body(userService.selectAchievement());
+    @GetMapping("/achievement/list")
+    public ResponseResult achievementList() {
+        return ResponseResult.success().body(userService.selectAchievementList());
+    }
+
+    @GetMapping("/achievement/detail")
+    public ResponseResult achievementDetail() {
+        return ResponseResult.success().body(userService.selectAchievementDetail());
     }
 }

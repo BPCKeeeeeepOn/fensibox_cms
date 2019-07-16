@@ -1,6 +1,9 @@
 package com.fensibox.cms.repository.biz;
 
 import com.fensibox.cms.common.DateTimeRange;
+import com.fensibox.cms.controller.vm.user.ClientUserOutVM;
+import com.fensibox.cms.controller.vm.user.UserAchievementOneVM;
+import com.fensibox.cms.controller.vm.user.UserAchievementOutVM;
 import com.fensibox.cms.controller.vm.user.UserOutVM;
 import com.fensibox.cms.controller.vm.announcement.AnnouncementOutVM;
 import com.fensibox.cms.controller.vm.deposit.DepositListOutVM;
@@ -29,23 +32,31 @@ public interface CmsBizMapper {
     List<UserOutVM> selectCustomUserList(@Param("userId") Long userId, @Param("role") Integer role);
 
     /**
+     * 查询后台用户详情
+     * @param userId
+     * @return
+     */
+    UserOutVM selectCustomUser(@Param("userId") Long userId);
+
+    /**
      * 查询不同权限下的会员
      *
      * @param userId
      * @param role
      * @return
      */
-    List<ClientUser> selectClientUserList(@Param("userId") Long userId, @Param("role") Integer role);
+    List<ClientUserOutVM> selectClientUserList(@Param("userId") Long userId, @Param("role") Integer role);
 
     /**
      * 根据不同日期 查询业绩
+     *
      * @param userId
      * @param role
      * @param range
      * @return
      */
-    int selectClientUserCount(@Param("userId") Long userId, @Param("role") Integer role, @Param("range") DateTimeRange<LocalDateTime> range);
-
+   // int selectClientUserCount(@Param("userId") Long userId, @Param("role") Integer role, @Param("range") DateTimeRange<LocalDateTime> range);
+    UserAchievementOneVM selectClientUserCount(@Param("userId") Long userId, @Param("role") Integer role, @Param("range") DateTimeRange<LocalDateTime> range);
     /**
      * 查看所有商品
      *

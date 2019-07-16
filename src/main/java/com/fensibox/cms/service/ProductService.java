@@ -70,12 +70,21 @@ public class ProductService {
         return productMapper.selectByPrimaryKey(id);
     }
 
-    public int update(Long id, Double price) {
+    public int updatePrice(Long id, Double price) {
         if (id == 0 && price == 0) {
             throw new BizException(ResponseResult.fail(ResultCode.PARAMS_ERROR));
         }
         Product product = productMapper.selectByPrimaryKey(id);
         product.setPrice(price);
+        return productMapper.updateByPrimaryKeySelective(product);
+    }
+
+    public int updateMemberPrice(Long id, Double price) {
+        if (id == 0 && price == 0) {
+            throw new BizException(ResponseResult.fail(ResultCode.PARAMS_ERROR));
+        }
+        Product product = productMapper.selectByPrimaryKey(id);
+        product.setMemberPrice(price);
         return productMapper.updateByPrimaryKeySelective(product);
     }
 

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class AnnouncementOutVM {
 
-    private Long id;
+    private String id;
 
     private String title;
 

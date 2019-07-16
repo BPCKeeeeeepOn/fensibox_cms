@@ -4,7 +4,9 @@ import com.fensibox.cms.entity.ClientUser;
 import com.fensibox.cms.entity.ClientUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ClientUserMapper {
     long countByExample(ClientUserExample example);
 
